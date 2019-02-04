@@ -21,6 +21,7 @@ namespace API.Controllers
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {
+            //Test
             return "value";
         }
 
