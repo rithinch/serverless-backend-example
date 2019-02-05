@@ -22,7 +22,7 @@ namespace API.Controllers
         public ActionResult<string> Get(int id)
         {
             //Test
-            return "value";
+            return $"value{id.ToString()}";
         }
 
         // POST api/values
