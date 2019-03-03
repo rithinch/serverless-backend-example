@@ -38,13 +38,13 @@ namespace API.Repositories
         #region Methods...
 
         #region AddUniqueIndex
-        private async void AddUniqueIndex(string property)
+        private void AddUniqueIndex(string property)
         {
             var options = new CreateIndexOptions() { Unique = true };
             var field = new StringFieldDefinition<AirplaneEntity>(property);
             var indexDefinition = new IndexKeysDefinitionBuilder<AirplaneEntity>().Ascending(field);
             CreateIndexModel<AirplaneEntity> _Index = new CreateIndexModel<AirplaneEntity>(indexDefinition, options);
-            await _AirplanesCollection.Indexes.CreateOneAsync(_Index);
+            _AirplanesCollection.Indexes.CreateOne(_Index);
         }
         #endregion
 

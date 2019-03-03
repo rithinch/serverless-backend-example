@@ -57,6 +57,18 @@ namespace API.Functions
         }
         #endregion
 
+        #region GetAllMaintenanceChecksForFlight
+        [FunctionName("GetAllMaintenanceChecksForFlight")]
+        public static async Task<IActionResult> GetAllMaintenanceChecksForFlight([HttpTrigger(AuthorizationLevel.Function, "get", Route = "airplanes/{regNo}/maintenance-history/")]HttpRequest req, string regNo, ILogger log)
+        {
+            log.LogInformation("Get All Maintenance Checks for a flight");
+
+            List<MaintenanceCheckEntity> _Checks = await new MaintenanceChecksRepository().GetAllByFlightRegNo(regNo);
+
+            return new JsonResult(_Checks);
+        }
+        #endregion
+
         #region GetSingleAirplane
         [FunctionName("GetSingleAirplane")]
         public static async Task<IActionResult> GetSingleAirplane([HttpTrigger(AuthorizationLevel.Function, "get", Route ="airplanes/{regNo}/")]HttpRequest req, string regNo, ILogger log)
