@@ -13,8 +13,8 @@ using Newtonsoft.Json;
 
 namespace API.Functions
 {
-    #region AirplaneFunctions
-    public static class AirplaneFunctions
+    #region Airplanes
+    public static class Airplanes
     {
         #region Constants...
         private static AirplaneRepository _AirplaneRepo;
@@ -31,7 +31,7 @@ namespace API.Functions
             try
             {
                 string _RequestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                Airplane _Entity = JsonConvert.DeserializeObject<Airplane>(_RequestBody);
+                AirplaneEntity _Entity = JsonConvert.DeserializeObject<AirplaneEntity>(_RequestBody);
                 await AirplaneRepo.Create(_Entity);
             }
             catch (Exception _Exception)
@@ -51,7 +51,7 @@ namespace API.Functions
         {
             log.LogInformation("Get All Airplanes Requested");
 
-            List<Airplane> _Airplanes = await AirplaneRepo.Get();
+            List<AirplaneEntity> _Airplanes = await AirplaneRepo.Get();
 
             return new JsonResult(_Airplanes);
         }
@@ -63,7 +63,7 @@ namespace API.Functions
         {
             log.LogInformation($"GET single airplane {regNo}");
 
-            Airplane _Result = null;
+            AirplaneEntity _Result = null;
 
             try
             {
@@ -120,7 +120,7 @@ namespace API.Functions
             try
             {
                 string _RequestBody = await new StreamReader(req.Body).ReadToEndAsync();
-                Airplane _Entity = JsonConvert.DeserializeObject<Airplane>(_RequestBody);
+                AirplaneEntity _Entity = JsonConvert.DeserializeObject<AirplaneEntity>(_RequestBody);
 
                 if (await AirplaneRepo.Get(regNo) != null)
                 {

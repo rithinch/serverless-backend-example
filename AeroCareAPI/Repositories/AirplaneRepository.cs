@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Entities;
-using Microsoft.Extensions.Configuration;
 using MongoDB.Bson;
 using MongoDB.Driver;
 using Newtonsoft.Json;
@@ -20,7 +19,7 @@ namespace API.Repositories
 
         #region Class Variables...
 
-        private readonly IMongoCollection<Airplane> _AirplanesCollection;
+        private readonly IMongoCollection<AirplaneEntity> _AirplanesCollection;
 
         #endregion
 
@@ -30,7 +29,7 @@ namespace API.Repositories
         {
             var client = new MongoClient(Environment.GetEnvironmentVariable("MongoStorageConnectionString"));
             var database = client.GetDatabase(Environment.GetEnvironmentVariable("DBName"));
-            _AirplanesCollection = database.GetCollection<Airplane>(AIRPLANES_COLLECTION_NAME);
+            _AirplanesCollection = database.GetCollection<AirplaneEntity>(AIRPLANES_COLLECTION_NAME);
             AddUniqueIndex("RegNo");
         }
 
@@ -42,15 +41,15 @@ namespace API.Repositories
         private async void AddUniqueIndex(string property)
         {
             var options = new CreateIndexOptions() { Unique = true };
-            var field = new StringFieldDefinition<Airplane>(property);
-            var indexDefinition = new IndexKeysDefinitionBuilder<Airplane>().Ascending(field);
-            CreateIndexModel<Airplane> _Index = new CreateIndexModel<Airplane>(indexDefinition, options);
+            var field = new StringFieldDefinition<AirplaneEntity>(property);
+            var indexDefinition = new IndexKeysDefinitionBuilder<AirplaneEntity>().Ascending(field);
+            CreateIndexModel<AirplaneEntity> _Index = new CreateIndexModel<AirplaneEntity>(indexDefinition, options);
             await _AirplanesCollection.Indexes.CreateOneAsync(_Index);
         }
         #endregion
 
         #region Create
-        public async Task<Airplane> Create(Airplane airplane)
+        public async Task<AirplaneEntity> Create(AirplaneEntity airplane)
         {
             await _AirplanesCollection.InsertOneAsync(airplane);
             return airplane;
@@ -58,23 +57,23 @@ namespace API.Repositories
         #endregion
 
         #region Get
-        public async Task<List<Airplane>> Get()
+        public async Task<List<AirplaneEntity>> Get()
         {
-            IAsyncCursor<Airplane> _Results = await _AirplanesCollection.FindAsync(plane => true);
+            IAsyncCursor<AirplaneEntity> _Results = await _AirplanesCollection.FindAsync(plane => true);
             return await _Results.ToListAsync();
         }
         #endregion
 
         #region Get(string regNo)
-        public async Task<Airplane> Get(string regNo)
+        public async Task<AirplaneEntity> Get(string regNo)
         {
-            IAsyncCursor<Airplane> _Results = await _AirplanesCollection.FindAsync(plane => plane.RegNo == regNo);
+            IAsyncCursor<AirplaneEntity> _Results = await _AirplanesCollection.FindAsync(plane => plane.RegNo == regNo);
             return await _Results.FirstOrDefaultAsync();
         }
         #endregion
 
         #region Remove(Airplane)
-        public async Task Remove(Airplane airplane)
+        public async Task Remove(AirplaneEntity airplane)
         {
             await _AirplanesCollection.DeleteOneAsync(plane => plane.Id == airplane.Id);
         }
@@ -88,7 +87,7 @@ namespace API.Repositories
         #endregion
 
         #region Update
-        public async Task Update(string regNo, Airplane airplane)
+        public async Task Update(string regNo, AirplaneEntity airplane)
         {
             var serializerSettings = new JsonSerializerSettings()
             {
@@ -96,7 +95,7 @@ namespace API.Repositories
                 DefaultValueHandling = DefaultValueHandling.Ignore
             };
             var bson = new BsonDocument() { { "$set", BsonDocument.Parse(JsonConvert.SerializeObject(airplane, serializerSettings)) } };
-            await _AirplanesCollection.UpdateOneAsync(Builders<Airplane>.Filter.Eq(plane => plane.RegNo, regNo), bson);
+            await _AirplanesCollection.UpdateOneAsync(Builders<AirplaneEntity>.Filter.Eq(plane => plane.RegNo, regNo), bson);
         }
         #endregion
 

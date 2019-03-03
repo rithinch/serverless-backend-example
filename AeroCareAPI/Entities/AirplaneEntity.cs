@@ -4,7 +4,7 @@ using MongoDB.Bson.Serialization.Attributes;
 
 namespace API.Entities
 {
-    public class Airplane
+    public class AirplaneEntity
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId), BsonRequired]
