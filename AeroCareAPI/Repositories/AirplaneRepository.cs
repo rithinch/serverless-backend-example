@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using API.Entities;
 using Microsoft.Extensions.Configuration;
+using MongoDB.Bson;
 using MongoDB.Driver;
+using Newtonsoft.Json;
 
 namespace API.Repositories
 {
@@ -88,7 +90,13 @@ namespace API.Repositories
         #region Update
         public async Task Update(string regNo, Airplane airplane)
         {
-            await _AirplanesCollection.ReplaceOneAsync(plane => plane.RegNo == regNo, airplane);
+            var serializerSettings = new JsonSerializerSettings()
+            {
+                NullValueHandling = NullValueHandling.Ignore,
+                DefaultValueHandling = DefaultValueHandling.Ignore
+            };
+            var bson = new BsonDocument() { { "$set", BsonDocument.Parse(JsonConvert.SerializeObject(airplane, serializerSettings)) } };
+            await _AirplanesCollection.UpdateOneAsync(Builders<Airplane>.Filter.Eq(plane => plane.RegNo, regNo), bson);
         }
         #endregion
 
