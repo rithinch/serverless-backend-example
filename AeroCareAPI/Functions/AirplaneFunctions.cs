@@ -121,7 +121,15 @@ namespace API.Functions
             {
                 string _RequestBody = await new StreamReader(req.Body).ReadToEndAsync();
                 Airplane _Entity = JsonConvert.DeserializeObject<Airplane>(_RequestBody);
-                await AirplaneRepo.Update(regNo, _Entity);
+
+                if (await AirplaneRepo.Get(regNo) != null)
+                {
+                    await AirplaneRepo.Update(regNo, _Entity);
+                }
+                else
+                {
+                    return new NotFoundResult();
+                }
             }
             catch (Exception _Exception)
             {
