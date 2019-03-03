@@ -1,0 +1,7 @@
+﻿{
+  "IsEncrypted": false,
+  "Values": {
+    "MongoStorageConnectionString": "mongodb://localhost:27017/",
+    "DBName": "AeroCareDB"
+  }
+}
