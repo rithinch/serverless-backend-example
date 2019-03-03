@@ -83,6 +83,34 @@ namespace API.Functions
         }
         #endregion
 
+        #region RemoveAirplane
+        [FunctionName("RemoveAirplane")]
+        public static async Task<IActionResult> RemoveAirplane([HttpTrigger(AuthorizationLevel.Function, "delete", Route = "airplanes/{regNo}")]HttpRequest req, string regNo, ILogger log)
+        {
+            log.LogInformation($"Remove airplane request");
+
+            try
+            {
+                if (await AirplaneRepo.Get(regNo) != null)
+                {
+                    await AirplaneRepo.Remove(regNo);
+                }
+                else
+                {
+                    return new NotFoundResult();
+                }
+
+            }
+            catch (Exception _Exception)
+            {
+                log.LogError(_Exception.Message);
+                return new NotFoundResult();
+            }
+
+            return new OkResult();
+        }
+        #endregion
+
         #region UpdateAirplane
         [FunctionName("UpdateAirplane")]
         public static async Task<IActionResult> UpdateAirplane([HttpTrigger(AuthorizationLevel.Function, "put", Route = "airplanes/{regNo}")]HttpRequest req, string regNo, ILogger log)
@@ -97,7 +125,6 @@ namespace API.Functions
             }
             catch (Exception _Exception)
             {
-                log.LogError("Error in Deserializing");
                 log.LogError(_Exception.Message);
                 return new NotFoundResult();
             }

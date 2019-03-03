@@ -7,7 +7,7 @@ namespace API.Entities
     public class Airplane
     {
         [BsonId]
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonRepresentation(BsonType.ObjectId), BsonRequired]
         public string Id { get; set; }
 
         [BsonElement("Name")]
@@ -19,7 +19,7 @@ namespace API.Entities
         [BsonElement("Miles")]
         public int Miles { get; set; }
 
-        [BsonElement("RegNo")]
+        [BsonElement("RegNo"), BsonRequired]
         public string RegNo { get; set; }
 
         [BsonElement("Details")]

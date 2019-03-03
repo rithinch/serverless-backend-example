@@ -66,19 +66,20 @@ namespace API.Repositories
         }
         #endregion
 
-        #region Remove(id)
-        public async Task Remove(string id)
+        #region Remove(regNo)
+        public async Task Remove(string regNo)
         {
-            await _AirplanesCollection.DeleteOneAsync(plane => plane.Id == id);
+            await _AirplanesCollection.DeleteOneAsync(plane => plane.RegNo == regNo);
         }
         #endregion
 
         #region Update
-        public async Task Update(string id, Airplane airplane)
+        public async Task Update(string regNo, Airplane airplane)
         {
-            await _AirplanesCollection.ReplaceOneAsync(plane => plane.Id == id, airplane);
+            await _AirplanesCollection.ReplaceOneAsync(plane => plane.RegNo == regNo, airplane);
         }
         #endregion
+
         #endregion
 
     }
