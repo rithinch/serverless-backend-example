@@ -29,11 +29,23 @@ namespace API.Repositories
             var client = new MongoClient(Environment.GetEnvironmentVariable("MongoStorageConnectionString"));
             var database = client.GetDatabase(Environment.GetEnvironmentVariable("DBName"));
             _AirplanesCollection = database.GetCollection<Airplane>(AIRPLANES_COLLECTION_NAME);
+            AddUniqueIndex("RegNo");
         }
 
         #endregion
 
         #region Methods...
+
+        #region AddUniqueIndex
+        private async void AddUniqueIndex(string property)
+        {
+            var options = new CreateIndexOptions() { Unique = true };
+            var field = new StringFieldDefinition<Airplane>(property);
+            var indexDefinition = new IndexKeysDefinitionBuilder<Airplane>().Ascending(field);
+            CreateIndexModel<Airplane> _Index = new CreateIndexModel<Airplane>(indexDefinition, options);
+            await _AirplanesCollection.Indexes.CreateOneAsync(_Index);
+        }
+        #endregion
 
         #region Create
         public async Task<Airplane> Create(Airplane airplane)
@@ -84,5 +96,4 @@ namespace API.Repositories
 
     }
     #endregion
-
 }
