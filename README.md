@@ -1,4 +1,4 @@
-# Introduction 
+## Introduction 
 
 Tech Stack includes .NET Core, Azure Functions, MongoDB, Git, Azure Pipelines and Postman Docs. 
 
@@ -9,6 +9,10 @@ Tech Stack includes .NET Core, Azure Functions, MongoDB, Git, Azure Pipelines an
 [![forthebadge](https://forthebadge.com/images/badges/made-with-c-sharp.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/built-with-love.svg)](https://forthebadge.com)
 
-# Complete API Documentation
+## Complete API Documentation
 
 https://documenter.getpostman.com/view/5756089/S11LsdCk
+
+## App Architecture
+
+![Azure Tech Stack](TechStack.png)
