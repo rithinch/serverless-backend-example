@@ -21,6 +21,17 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+
+- task: SnykSecurityScan@0
+  inputs:
+    serviceConnectionEndpoint: 'Snyk - rithinch org'
+    testType: 'app'
+    severityThreshold: 'high'
+    monitorOnBuild: true
+    failOnIssues: true
+    projectName: 'rithinch/serverless-backend-example'
+    organization: 'rithinch'
+
 - task: VSBuild@1
   inputs:
     solution: '$(solution)'
