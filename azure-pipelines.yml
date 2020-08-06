@@ -32,6 +32,7 @@ steps:
   inputs:
     serviceConnectionEndpoint: 'Snyk - rithinch org'
     testType: 'app'
+    targetFile: 'AeroCareAPI/API.csproj'
     severityThreshold: 'high'
     monitorOnBuild: true
     failOnIssues: true
